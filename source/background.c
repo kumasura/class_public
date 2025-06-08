@@ -2905,10 +2905,6 @@ double V_e_scf(struct background *pba,
                double phi
                ) {
   double scf_lambda = pba->scf_parameters[0];
-  //  double scf_alpha  = pba->scf_parameters[1];
-  //  double scf_A      = pba->scf_parameters[2];
-  //  double scf_B      = pba->scf_parameters[3];
-
   return  exp(-scf_lambda*phi);
 }
 
@@ -2985,17 +2981,50 @@ double ddV_p_scf(
 double V_scf(
              struct background *pba,
              double phi) {
+  if (pba->scf_potential == scf_pot_spiral) {
+    double alpha = pba->scf_parameters[0];
+    double lambda = pba->scf_parameters[1];
+    double beta = pba->scf_parameters[2];
+    double gamma = pba->scf_parameters[3];
+    double k = pba->scf_parameters[4];
+    double omega = pba->scf_parameters[5];
+    double delta = pba->scf_parameters[6];
+    double psi0 = pba->scf_parameters[7];
+    double theta_val = _PI_;
+    double t_val = 0.5;
+    return alpha*exp(-lambda*phi) + beta*phi*phi +
+           gamma*cos(k*theta_val - omega*t_val) +
+           delta*pow(log(phi/psi0),2);
+  }
   return  V_e_scf(pba,phi)*V_p_scf(pba,phi);
 }
 
 double dV_scf(
               struct background *pba,
               double phi) {
+  if (pba->scf_potential == scf_pot_spiral) {
+    double alpha = pba->scf_parameters[0];
+    double lambda = pba->scf_parameters[1];
+    double beta = pba->scf_parameters[2];
+    double delta = pba->scf_parameters[6];
+    double psi0 = pba->scf_parameters[7];
+    return -alpha*lambda*exp(-lambda*phi) + 2.*beta*phi +
+           2.*delta*log(phi/psi0)/phi;
+  }
   return dV_e_scf(pba,phi)*V_p_scf(pba,phi) + V_e_scf(pba,phi)*dV_p_scf(pba,phi);
 }
 
 double ddV_scf(
                struct background *pba,
                double phi) {
+  if (pba->scf_potential == scf_pot_spiral) {
+    double alpha = pba->scf_parameters[0];
+    double lambda = pba->scf_parameters[1];
+    double beta = pba->scf_parameters[2];
+    double delta = pba->scf_parameters[6];
+    double psi0 = pba->scf_parameters[7];
+    return alpha*lambda*lambda*exp(-lambda*phi) + 2.*beta +
+           2.*delta*(1.-log(phi/psi0))/(phi*phi);
+  }
   return ddV_e_scf(pba,phi)*V_p_scf(pba,phi) + 2*dV_e_scf(pba,phi)*dV_p_scf(pba,phi) + V_e_scf(pba,phi)*ddV_p_scf(pba,phi);
 }
