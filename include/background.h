@@ -19,6 +19,9 @@ enum equation_of_state {CLP,EDE};
 
 enum varconst_dependence {varconst_none,varconst_instant};
 
+/** possible forms of the scalar field potential */
+enum scf_potential {scf_pot_exp_poly, scf_pot_spiral};
+
 /** list of formats for the vector of background quantities */
 
 enum vecback_format {short_info, normal_info, long_info};
@@ -118,6 +121,7 @@ struct background
   double phi_ini_scf;      /**< \f$ \phi(t_0) \f$: scalar field initial value */
   double phi_prime_ini_scf;/**< \f$ d\phi(t_0)/d\tau \f$: scalar field initial derivative wrt conformal time */
   int scf_parameters_size; /**< size of scf_parameters */
+  enum scf_potential scf_potential; /**< form of scalar field potential */
   double varconst_alpha; /**< finestructure constant for varying fundamental constants */
   double varconst_me; /**< electron mass for varying fundamental constants */
   enum varconst_dependence varconst_dep; /**< dependence of the varying fundamental constants as a function of time */

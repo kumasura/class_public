@@ -3313,6 +3313,22 @@ int input_read_parameters_species(struct file_content * pfc,
                                            errmsg),
                errmsg,errmsg);
 
+    /* Potential form */
+    class_call(parser_read_string(pfc,
+                                  "scf_potential",
+                                  &string1,
+                                  &flag1,
+                                  errmsg),
+               errmsg,errmsg);
+    if (flag1 == _TRUE_) {
+      if ((strstr(string1,"spiral") != NULL) || (strstr(string1,"SPIRAL") != NULL)) {
+        pba->scf_potential = scf_pot_spiral;
+      }
+      else {
+        pba->scf_potential = scf_pot_exp_poly;
+      }
+    }
+
     /** 8.b.2) SCF initial conditions from attractor solution */
     /* Read */
     class_call(parser_read_string(pfc,
@@ -5907,6 +5923,7 @@ int input_default_params(struct background *pba,
   /** 9.b.1) Potential parameters and initial conditions */
   pba->scf_parameters = NULL;
   pba->scf_parameters_size = 0;
+  pba->scf_potential = scf_pot_exp_poly;
   /** 9.b.2) Initial conditions from attractor solution */
   pba->attractor_ic_scf = _TRUE_;
   pba->phi_ini_scf = 1;                // MZ: initial conditions are as multiplicative
