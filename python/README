@@ -12,4 +12,9 @@ You can check that these steps worked by typing
 > python
 >>> from classy import Class
 
-If python does not complain, the Class module has been correctly installed in your python distribution. You can now import it and use its functions from your python codes.  
+If python does not complain, the Class module has been correctly installed in your python distribution. You can now import it and use its functions from your python codes.
+
+The wrapper also exposes the scalar field potential choice through the
+``scf_potential`` entry of the parameter dictionary.  It accepts either
+``exp_poly`` (the default) or ``spiral`` and forwards this value to the
+underlying CLASS code.

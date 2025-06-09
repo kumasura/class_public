@@ -50,6 +50,10 @@ cdef extern from "class.h":
         out_sigma_prime
         out_sigma_disp
 
+    cdef enum scf_potential:
+        scf_pot_exp_poly
+        scf_pot_spiral
+
     cdef struct precision:
         double nonlinear_min_k_max
         ErrorMsg error_message
@@ -107,6 +111,7 @@ cdef extern from "class.h":
         double H_eq
         double z_eq
         double tau_eq
+        scf_potential scf_potential
 
     cdef struct thermodynamics:
         short is_allocated
