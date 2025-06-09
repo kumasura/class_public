@@ -126,6 +126,10 @@ cdef class Class:
         def __get__(self):
             return self.fo.method
 
+    property scf_potential:
+        def __get__(self):
+            return self.ba.scf_potential
+
     def set_default(self):
         _pars = {
             "output":"tCl mPk",}
